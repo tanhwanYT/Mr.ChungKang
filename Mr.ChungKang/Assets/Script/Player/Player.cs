@@ -10,6 +10,15 @@ public class Player : Character
     public PlayerState stats;
     public SkillManager skillManager;
 
+    private SpriteRenderer spriteRenderer;
+    private PlayerAnimation anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<PlayerAnimation>();
+        spriteRenderer = GetComponent<SpriteRenderer>(); 
+    }
+
     void Update()
     {
         HandleMovement();
@@ -35,6 +44,11 @@ public class Player : Character
 
         Vector3 direction = new Vector3(h, v).normalized;
         transform.Translate(direction * moveSpeed * Time.deltaTime);
+
+        anim.UpdateMoveAnimation(direction);
+
+        if (h != 0)
+            spriteRenderer.flipX = h > 0;
     }
 
     private void HandleSkillInput()
