@@ -16,6 +16,31 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("isRunning", isMoving);
     }
 
+    public void SetIsJump(bool isJumping)
+    {
+        animator.SetBool("jump", isJumping);
+    }
+    public void SetIsGround(bool grounded)
+    {
+        animator.SetBool("isground", grounded);
+    }
+
+    public void PlayDash(bool isdash)
+    {
+        animator.SetBool("isAbleDash",isdash );
+    }
+
+    public bool IsPlaying(string animName)
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsName(animName) &&
+               animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
+    }
+
+    public void PlayIdle()
+    {
+        animator.Play("Idle");
+    }
+
     public void TriggerSkill()
     {
 
