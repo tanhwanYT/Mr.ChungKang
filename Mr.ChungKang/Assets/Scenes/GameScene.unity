@@ -139,7 +139,7 @@ GameObject:
   - component: {fileID: 22445550}
   m_Layer: 0
   m_Name: PlayerSample
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,7 +185,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
+  m_Sprite: {fileID: -1744388746, guid: 509e3fadfe7177945ad8e494f54f6a91, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -292,6 +292,7 @@ MonoBehaviour:
   skillManager: {fileID: 0}
   is_jump: 0
   is_ground: 0
+  dashSprite: {fileID: 21300000, guid: 623b0fa95139aaf4086f6889d77b0246, type: 3}
   isAbleDash: 1
   isDashing: 0
   dashPower: 10
@@ -498,6 +499,7 @@ GameObject:
   - component: {fileID: 1312287456}
   - component: {fileID: 1312287455}
   - component: {fileID: 1312287454}
+  - component: {fileID: 1312287457}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -579,6 +581,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1312287457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1312287453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ad1e548bf9afcb408a19a7e78b976fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 22445545}
+  smoothSpeed: 3
+  offset: {x: 0, y: 0}
+  limitMinX: -200
+  limitMaxX: 200
+  limitMinY: -100
+  limitMaxY: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

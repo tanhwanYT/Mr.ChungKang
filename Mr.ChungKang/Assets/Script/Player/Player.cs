@@ -16,6 +16,10 @@ public class Player : Character
     private SpriteRenderer spriteRenderer;
     private PlayerAnimation anim;
     private Rigidbody2D rigid;
+    private Animator animator;
+
+    [SerializeField] private Sprite dashSprite;
+    private Sprite defaultSprite;
 
     [Header("Dash Settings")]
     public bool isAbleDash = true;
@@ -27,9 +31,11 @@ public class Player : Character
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         anim = GetComponent<PlayerAnimation>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
         rigid = GetComponent<Rigidbody2D>();
+        defaultSprite = spriteRenderer.sprite; 
     }
 
     void Update()
@@ -75,7 +81,6 @@ public class Player : Character
         if (Input.GetKeyDown(KeyCode.LeftShift) && isAbleDash)
         {
             isDashing = true;
-            anim.PlayDash(isDashing);
             StartCoroutine(DashStart());
         }
         if (h != 0)
@@ -113,18 +118,22 @@ public class Player : Character
         float dashDuration = 0.2f;
         rigid.velocity = new Vector2(dashDir * dashPower, 0);
 
-        yield return new WaitForSeconds(0.2f);
+        animator.enabled = false;
+        spriteRenderer.sprite = dashSprite;
+
+        yield return new WaitForSeconds(dashDuration);
 
         if (is_ground)
             anim.PlayIdle();
         else
             StartCoroutine(JumpAnimation());
 
+        animator.enabled = true;
+        spriteRenderer.sprite = defaultSprite;
+
         isDashing = false;
         rigid.gravityScale = originalGravity;
-        yield return new WaitForSeconds(dashDuration);
         rigid.velocity = Vector2.zero;
-        anim.PlayDash(isDashing);
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;

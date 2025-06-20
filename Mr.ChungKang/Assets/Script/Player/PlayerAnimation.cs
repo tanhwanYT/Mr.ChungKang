@@ -25,11 +25,6 @@ public class PlayerAnimation : MonoBehaviour
         animator.SetBool("isground", grounded);
     }
 
-    public void PlayDash(bool isdash)
-    {
-        animator.SetBool("isAbleDash",isdash );
-    }
-
     public bool IsPlaying(string animName)
     {
         return animator.GetCurrentAnimatorStateInfo(0).IsName(animName) &&
