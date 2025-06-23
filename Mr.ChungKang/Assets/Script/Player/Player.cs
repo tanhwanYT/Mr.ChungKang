@@ -5,6 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+public enum AttackType
+{
+    Melee,
+    Ranged
+}
 
 public class Player : Character
 {
@@ -12,6 +17,7 @@ public class Player : Character
     public SkillManager skillManager;
     public bool is_jump = false;
     public bool is_ground = false;
+    public bool is_punch = false;
 
     private SpriteRenderer spriteRenderer;
     private PlayerAnimation anim;
@@ -29,6 +35,10 @@ public class Player : Character
 
     float jump_power = 5.0f;
 
+    public AttackType currentAttackType = AttackType.Melee;
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -42,6 +52,13 @@ public class Player : Character
     {
         HandleMovement();
         HandleSkillInput();
+        HandleAttackInput();
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            currentAttackType = (currentAttackType == AttackType.Melee) ? AttackType.Ranged : AttackType.Melee;
+            Debug.Log("폼 전환: " + currentAttackType);
+        }
     }
 
     public override void TakeDamage(float amount)
@@ -145,5 +162,50 @@ public class Player : Character
         anim.SetIsJump(true);
         anim.SetIsGround(false);
         yield return new WaitForSeconds(0.2f);
+    }
+
+    private void HandleAttackInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Z)) // 기본 공격 키
+        {
+            if (currentAttackType == AttackType.Melee)
+                MeleeAttack();
+            else if (currentAttackType == AttackType.Ranged)
+                RangedAttack();
+        }
+    }
+
+    private void MeleeAttack()
+    {
+        if (!is_ground || is_punch)
+        {
+            return;
+        }
+        is_punch = true;
+        anim.TriggerPunch();
+
+        Vector2 dir = spriteRenderer.flipX ? Vector2.left : Vector2.right;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1.5f, LayerMask.GetMask("Enemy"));
+
+        if (hit.collider != null)
+        {
+            Enemy enemy = hit.collider.GetComponent<Enemy>();
+            if (enemy != null)
+                enemy.TakeDamage(5f);
+        }
+
+        StartCoroutine(ResetAttack(0.4f));
+    }
+    private IEnumerator ResetAttack(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        is_punch = false;
+    }
+
+    private void RangedAttack()
+    {
+        Vector3 dir = spriteRenderer.flipX ? Vector3.right : Vector3.left;
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+        bullet.GetComponent<Rigidbody2D>().velocity = dir * 10f;
     }
 }

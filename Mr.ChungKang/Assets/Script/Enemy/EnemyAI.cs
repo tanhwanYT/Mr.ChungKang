@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public interface EnemyAI
+public abstract class EnemyAI : ScriptableObject
 {
-    void Execute(Enemy enemy);
+    public abstract void Execute(Enemy enemy);
 }

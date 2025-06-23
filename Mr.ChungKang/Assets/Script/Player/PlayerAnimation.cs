@@ -24,6 +24,10 @@ public class PlayerAnimation : MonoBehaviour
     {
         animator.SetBool("isground", grounded);
     }
+    public void TriggerPunch()
+    {
+        animator.SetTrigger("punch");
+    }
 
     public bool IsPlaying(string animName)
     {
