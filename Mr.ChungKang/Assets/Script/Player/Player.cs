@@ -206,6 +206,6 @@ public class Player : Character
     {
         Vector3 dir = spriteRenderer.flipX ? Vector3.right : Vector3.left;
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
-        bullet.GetComponent<Rigidbody2D>().velocity = dir * 10f;
+        bullet.GetComponent<Rigidbody2D>().velocity = dir * 20f;
     }
 }
