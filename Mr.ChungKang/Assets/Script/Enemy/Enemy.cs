@@ -16,6 +16,8 @@ public class Enemy : Character
 
     RectTransform hpBar;
     private Image hpFillImage;
+
+    private GameObject playerobj;
     private void Start()
     {
         hpBar = Instantiate(prfhpBar, canvas.transform).GetComponent<RectTransform>();
@@ -23,6 +25,7 @@ public class Enemy : Character
         maxHP = data.maxHP;
         currentHP = maxHP;
         moveSpeed = data.moveSpeed;
+        playerobj = GameObject.FindWithTag("Player");
 
         GetComponent<Animator>().runtimeAnimatorController = data.animator;
         
@@ -65,6 +68,12 @@ public class Enemy : Character
 
     public override void Die()
     {
+        if (playerobj != null)
+        {
+            Player player = playerobj.GetComponent<Player>();
+            player.GainExp(data.expReward);
+        }
+
         Destroy(gameObject);
         Destroy(hpBar.gameObject);
     }

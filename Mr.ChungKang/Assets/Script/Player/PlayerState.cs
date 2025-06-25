@@ -6,9 +6,16 @@ using System.Threading.Tasks;
 
 public class PlayerState
 {
-    public int level;
-    public float exp;
-    public float attackPower;
-    public float defense;
-    public float ep;
+    public float currentExp = 0f;
+    public float maxExp = 100f;
+
+    public float maxHP = 100f;
+    public float currentHP = 100f;
+
+    public float maxEP = 50f;
+    public float currentEP = 50f;
+
+    public int level = 1;
+    public float attackPower = 10f;
+    public float defense = 0f;
 }

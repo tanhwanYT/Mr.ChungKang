@@ -12,6 +12,7 @@ public class EnemyData : ScriptableObject
     public float maxHP;
     public float moveSpeed;
     public float attackPower;
+    public float expReward = 50f;
     public GameObject attackPrefab;
     public RuntimeAnimatorController animator;
 }

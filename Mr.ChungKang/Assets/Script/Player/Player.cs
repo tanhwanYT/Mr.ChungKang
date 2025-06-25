@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 public enum AttackType
 {
     Melee,
@@ -18,6 +19,11 @@ public class Player : Character
     public bool is_jump = false;
     public bool is_ground = false;
     public bool is_punch = false;
+
+    [Header("UI")]
+    public Image hpFill;
+    public Image epFill;
+    public Image expFill;
 
     private SpriteRenderer spriteRenderer;
     private PlayerAnimation anim;
@@ -41,6 +47,9 @@ public class Player : Character
 
     private void Awake()
     {
+        if (stats == null)
+            stats = new PlayerState();
+
         animator = GetComponent<Animator>();
         anim = GetComponent<PlayerAnimation>();
         spriteRenderer = GetComponent<SpriteRenderer>(); 
@@ -53,6 +62,7 @@ public class Player : Character
         HandleMovement();
         HandleSkillInput();
         HandleAttackInput();
+        UpdateUI();
 
         if (Input.GetKeyDown(KeyCode.Tab))
         {
@@ -207,5 +217,44 @@ public class Player : Character
         Vector3 dir = spriteRenderer.flipX ? Vector3.right : Vector3.left;
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         bullet.GetComponent<Rigidbody2D>().velocity = dir * 20f;
+    }
+
+    public void GainExp(float amount)
+    {
+        stats.currentExp += amount;
+
+        while (stats.currentExp >= stats.maxExp)
+        {
+            stats.currentExp -= stats.maxExp;
+            LevelUp();
+        }
+    }
+
+    private void LevelUp()
+    {
+        stats.level++;
+        Debug.Log("레벨 업! 현재 레벨: " + stats.level);
+
+        stats.maxHP += 20;
+        stats.maxEP += 10;
+        stats.attackPower += 5;
+
+        stats.currentHP = stats.maxHP;
+        stats.currentEP = stats.maxEP;
+
+        stats.maxExp += 50;
+
+    }
+
+    private void UpdateUI()
+    {
+        if (hpFill != null)
+            hpFill.fillAmount = stats.currentHP / stats.maxHP;
+
+        if (epFill != null)
+            epFill.fillAmount = stats.currentEP / stats.maxEP;
+
+        if (expFill != null)
+            expFill.fillAmount = stats.currentExp / stats.maxExp;
     }
 }
