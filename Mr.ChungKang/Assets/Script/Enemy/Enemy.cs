@@ -13,6 +13,13 @@ public class Enemy : Character
     public GameObject prfhpBar;
     public GameObject canvas;
     public float height = 1.7f;
+    public GameObject bulletPrefab;
+    public Transform firePoint;
+    public float attackRange = 5f;
+    public float fireCooldown = 1f;
+
+    [HideInInspector]
+    public float lastFireTime = -999f;
 
     RectTransform hpBar;
     private Image hpFillImage;
@@ -76,5 +83,11 @@ public class Enemy : Character
 
         Destroy(gameObject);
         Destroy(hpBar.gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(transform.position, ai is ChasePlayerAI aiChase ? aiChase.detectionBoxSize : Vector3.zero);
     }
 }

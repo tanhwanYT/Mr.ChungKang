@@ -80,7 +80,6 @@ public class Player : Character
     public override void Die()
     {
         Debug.Log("Player Dead");
-        // GameOver 처리
     }
 
     private void HandleMovement()

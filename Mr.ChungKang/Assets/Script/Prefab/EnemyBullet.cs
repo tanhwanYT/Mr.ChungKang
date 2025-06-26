@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBullet : MonoBehaviour
+public class EnemyBullet : MonoBehaviour
 {
     public float damage = 5f;
 
@@ -13,18 +13,18 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag("Player"))
         {
-            Enemy enemy = other.GetComponent<Enemy>();
-            if (enemy != null)
+            Player player = other.GetComponent<Player>();
+            if (player != null)
             {
-                enemy.TakeDamage(damage);
+                player.TakeDamage(damage);
                 Destroy(gameObject);
             }
         }
         else if (other.gameObject.layer == LayerMask.NameToLayer("Platform"))
         {
-            Destroy(gameObject);        
+            Destroy(gameObject);
         }
     }
 }
