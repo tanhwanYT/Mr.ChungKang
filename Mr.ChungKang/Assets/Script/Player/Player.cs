@@ -47,6 +47,14 @@ public class Player : Character
 
     private void Awake()
     {
+        TrailRenderer trail = GetComponent<TrailRenderer>();
+        if (trail != null)
+        {
+            trail.enabled = false;
+            trail.emitting = false;
+            trail.Clear();
+        }
+
         if (stats == null)
             stats = new PlayerState();
 
@@ -144,6 +152,14 @@ public class Player : Character
         float dashDuration = 0.2f;
         rigid.velocity = new Vector2(dashDir * dashPower, 0);
 
+        TrailRenderer trail = GetComponent<TrailRenderer>();
+        if (trail != null)
+        {
+            trail.enabled = true;
+            trail.Clear();
+            trail.emitting = true;
+        }
+
         animator.enabled = false;
         spriteRenderer.sprite = dashSprite;
 
@@ -160,6 +176,13 @@ public class Player : Character
         isDashing = false;
         rigid.gravityScale = originalGravity;
         rigid.velocity = Vector2.zero;
+
+        if (trail != null)
+        {
+            trail.emitting = false;
+            trail.Clear();
+            trail.enabled = false;
+        }
 
         yield return new WaitForSeconds(dashCooldown);
         isAbleDash = true;
